@@ -10,7 +10,7 @@ To see the app: -> go to the branch **react** <br>
 To see the AI part: -> got to the branch **Machine-Learning-Models** <br>
 
 Credits:<br>
-Idea taken from: https://github.com/venisehannoyer?tab=repositories
+Idea taken from: https://github.com/venisehannoyer/Hear-me-Mobile-app
 
 
 
