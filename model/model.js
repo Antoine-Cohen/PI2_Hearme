@@ -3,11 +3,10 @@ import "@tensorflow/tfjs-react-native";
 import { bundleResourceIO, decodeJpeg } from "@tensorflow/tfjs-react-native";
 import { getFloatArray } from "../audioRecorder";
 
-const modelJson = require("./model.json");
-const modelWeights = require("./model_weights.bin");
+const modelJson = require("./better_model.json");
+const modelWeights = require("./better_weights.bin");
 
-// var wav = require('wav');
-
+// retrieve the model
 export const getModel = async () => {
   try {
     console.log("Waiting to be ready...");
@@ -22,10 +21,7 @@ export const getModel = async () => {
   }
 };
 
-// export const get_prediction = (model) =>{
-
-// }
-
+// Request the yamnet model from tensorflow Hub
 export const getYamnet = async () => {
   console.log("Waiting to be ready...");
   await tf.ready();
@@ -40,6 +36,7 @@ export const getYamnet = async () => {
   return yamnet;
 };
 
+// Make a prediction with yamnet and extract the embeddings
 export const getEmbeddings = async (yamnet) => {
   const floatArr = await getFloatArray();
   const wav = tf.tensor(floatArr);
@@ -50,24 +47,3 @@ export const getEmbeddings = async (yamnet) => {
   // console.log("returning the embeddings");
   return embeddings;
 };
-
-// export const get_audio_wav_from_mic  = async () => {
-//   console.log('Initiating microphone...');
-//   const mic = await tf.data.microphone({
-//     fftSize: 1024,
-//     columnTruncateLength: 232,
-//     numFramesPerSpectrogram: 43,
-//     sampleRateHz:44100,
-//     includeSpectrogram: false,
-//     includeWaveform: true
-//   });
-//   console.log('Recording audio...');
-//   const audioData = await mic.capture();
-//   console.log('Audio recorded!');
-//   const waveformTensor = audioData.waveform;
-//   //waveformTensor.print();
-//   mic.stop();
-//   console.log('Stopped recording');
-
-//   return waveformTensor;
-// }

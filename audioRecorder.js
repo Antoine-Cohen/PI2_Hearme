@@ -7,6 +7,7 @@ let audio_path = "";
 var RNFS = require("react-native-fs");
 let wav = new WaveFile();
 
+// get the user's permission for recording audio (on Android)
 const getPermissions = async () => {
   try {
     const granted = await PermissionsAndroid.request(
@@ -26,8 +27,8 @@ const getPermissions = async () => {
   }
 };
 
+// Start the recording: once the recording stops, a wav file will be created inside the phone's directories
 export const startRecording = async () => {
-  base64_data = [];
   const permission = await getPermissions();
   const options = {
     sampleRate: 16000, // default 44100
@@ -38,16 +39,18 @@ export const startRecording = async () => {
   };
 
   AudioRecord.init(options);
-  console.log("Starting Recording!");
+  //console.log("Starting Recording!");
   AudioRecord.start();
-  console.log("Started recording!");
+  //console.log("Started recording!");
 };
 
+// Stop the recording
 export const stopRecording = () => {
   AudioRecord.stop();
   console.log("Stopped recording!");
 };
 
+// Fetch the wav file and decode it from base 64
 export const getFloatArray = async () => {
   try {
     audio_path = RNFS.DocumentDirectoryPath + "/test.wav";

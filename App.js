@@ -1,41 +1,48 @@
 import { StatusBar } from "expo-status-bar";
 import React, { Component, useRef, useState } from "react";
-import { View, Text, StyleSheet, AppRegistry, Pressable } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  AppRegistry,
+  Pressable,
+  ActivityIndicator,
+} from "react-native";
 import * as tf from "@tensorflow/tfjs";
 import { getModel, getYamnet, getEmbeddings } from "./model/model";
 import { startRecording, stopRecording } from "./audioRecorder";
+// import { startBle } from "./Bluetooth";
 
 var rnfs = require("react-native-fs");
 
+// Main component
 class App extends React.Component {
-  //const [isProcessing, setIsProcessing] = useState(false);
-  //Load the model
-
   constructor(props) {
     super(props);
 
     this.state = {
-      yamnet: null,
-      model: null,
+      yamnet: null, // yamnet model
+      model: null, // our model
       predicted_class: "No sound detected",
-      waveform_shape: "No shape",
+      recording: "Not recording",
+      score: "No score",
+      loading: true,
     };
   }
-
+  // Load both models once the app starts
   async componentDidMount() {
     console.log("Component mounted");
     let yamnet_ = await getYamnet();
     let model_ = await getModel();
-    this.setState({ yamnet: yamnet_, model: model_ }, () => {
+    // await startBle();
+    this.setState({ yamnet: yamnet_, model: model_, loading: false }, () => {
       console.log("Loaded model and yamnet!");
     });
   }
 
-  componentDidUpdate() {
-    console.log("Component updated!");
-  }
-
+  // Function to predict a sound and calculate the score (accuracy)
   async updateClass() {
+    this.setState({ loading: true });
     console.log("getting results...");
     const embeddings = await getEmbeddings(this.state.yamnet);
     const result_tensor = this.state.model.predict(embeddings);
@@ -52,37 +59,62 @@ class App extends React.Component {
       "coughing",
     ];
     const index = tf.mean(result_tensor, 0).argMax(0).arraySync();
+    const max = tf.mean(result_tensor, 0).max().arraySync();
+    const sum = tf.mean(result_tensor, 0).sum().arraySync();
+    const score = max / sum;
     let inferred_class = sounds[index];
     console.log("Class inferred:", inferred_class);
-    this.setState({ predicted_class: inferred_class }, () => {
-      console.log("Inferred class state updated");
-    });
+    this.setState(
+      { predicted_class: inferred_class, loading: false, score: score },
+      () => {
+        console.log("Inferred class state updated");
+      }
+    );
   }
 
   render() {
-    return (
-      <View style={styles.container}>
-        <Text>AudioApp</Text>
-        <Pressable style={styles.loadModel} onPress={() => this.updateClass()}>
-          <Text>Predict sound</Text>
-        </Pressable>
-        <Text>Inferred Class: {this.state.predicted_class}</Text>
-        <Pressable
-          style={styles.loadModel}
-          onPress={() => {
-            console.log("pressed on record button!");
-            startRecording();
-          }}
-        >
-          <Text>Record audio</Text>
-        </Pressable>
-        <Text>Waveform shape: {this.state.waveform_shape}</Text>
+    if (!this.state.loading) {
+      return (
+        <View style={styles.container}>
+          <Text>AudioApp</Text>
+          <Pressable
+            style={styles.loadModel}
+            onPress={() => this.updateClass()}
+          >
+            <Text>Predict sound</Text>
+          </Pressable>
+          <Text>Inferred Class: {this.state.predicted_class}</Text>
+          <Text>Score: {this.state.score}</Text>
+          <Pressable
+            style={styles.loadModel}
+            onPress={() => {
+              console.log("pressed on record button!");
+              this.setState({ recording: "Recording" });
+              startRecording();
+            }}
+          >
+            <Text>Record audio</Text>
+          </Pressable>
+          <Text>{this.state.recording}</Text>
 
-        <Pressable style={styles.loadModel} onPress={() => stopRecording()}>
-          <Text>Stop Recording</Text>
-        </Pressable>
-      </View>
-    );
+          <Pressable
+            style={styles.loadModel}
+            onPress={() => {
+              this.setState({ recording: "Not recording" });
+              stopRecording();
+            }}
+          >
+            <Text>Stop Recording</Text>
+          </Pressable>
+        </View>
+      );
+    } else {
+      return (
+        <View style={styles.container}>
+          <ActivityIndicator size="large" color="#00ff00" />
+        </View>
+      );
+    }
   }
 }
 
