@@ -12,6 +12,9 @@ To see the AI part: -> got to the branch **Machine-Learning-Models** <br>
 Credits:<br>
 Idea taken from: https://github.com/venisehannoyer/Hear-me-Mobile-app
 
+Test videos for the app:
+[Coughing sound](https://youtu.be/htk-HbeimwY)
+
 
 
 
