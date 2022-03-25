@@ -18,6 +18,7 @@ Test videos for the app: <br>
 
 Test videos for the electronics:<br>
 [Circuit demo](https://youtu.be/4-SqgYxR2aA) <br>
+[Circuit demo voix](https://youtu.be/ixKtBrNozL8)<br>
 
 
 
