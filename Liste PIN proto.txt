@@ -1,0 +1,38 @@
+MIC 1:
+
+Vdd <-> 3V3            
+Grd <-> Grd
+OUT <-> 35
+
+MIC 2:
+
+Vdd <-> 3V3
+Grd <-> Grd
+OUT <-> 33
+
+MIC 3:
+
+Vdd <-> 3V3
+Grd <-> Grd
+OUT <-> 32
+
+
+Module Sd:
+
+Grd : Grd
+3V3 : 3V3
+CS: 5
+MOSI : 23
+SCK : 18
+MISO : 19
+
+
+vibreur:
+
+12, 13, 14
+
+led : 34 
+
+
+
+
