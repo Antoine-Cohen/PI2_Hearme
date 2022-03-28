@@ -4,10 +4,12 @@ This project aims to help people who are aurally impared, deaf or have trouble h
 
 We implemented a solution: a neckband connected to an app <br>
 - the neckband vibrates when a sound is detected <br>
-- The sound is then sent to the app by bluetooth and is identified with AI.<br>
+- The sound is then sent to the app by bluetooth and is identified with AI (needs to be implemented).<br>
 
 To see the app: -> go to the branch **react** <br>
-To see the AI part: -> got to the branch **Machine-Learning-Models** <br>
+To see the AI part: -> go to the branch **Machine-Learning-Models** <br>
+To see the electronics part: -> go to the branch **electronics** <br>
+To see the example bluetooth react application: -> go to the branch **bluetooth-example-react**<br>
 
 Credits:<br>
 Idea taken from: https://github.com/venisehannoyer/Hear-me-Mobile-app
