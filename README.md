@@ -1,27 +1,6 @@
 # PI2_Hearme
-## Welcome to the (H)ear-me project! <br>
-This project aims to help people who are aurally impared, deaf or have trouble hearing sounds. <br>
 
-We implemented a solution: a neckband connected to an app <br>
-- the neckband vibrates when a sound is detected <br>
-- The sound is then sent to the app by bluetooth and is identified with AI.<br>
-
-To see the app: -> go to the branch **react** <br>
-To see the AI part: -> got to the branch **Machine-Learning-Models** <br>
-
-Credits:<br>
-Idea taken from: https://github.com/venisehannoyer/Hear-me-Mobile-app
-
-Test videos for the app: <br>
-[Coughing sound](https://youtu.be/htk-HbeimwY) <br>
-[Vacuum cleaner](https://youtu.be/I0u05wAavY8) <br>
-[Car horn](https://youtu.be/mu4MlMqj1s8)<br>
-
-Test videos for the electronics:<br>
-[Circuit demo](https://youtu.be/4-SqgYxR2aA) <br>
-[Circuit demo voix](https://youtu.be/ixKtBrNozL8)<br>
-[Circuit demo alarme](https://youtu.be/dYirIxXml8Y)<br>
-[Saving wav file in ESP32](https://youtu.be/FV7ENaNfnCY)
+This branch contains the BLE setup connection and micro SD operations with the ESP32
 
 
 
