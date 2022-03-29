@@ -11,8 +11,7 @@ To see the AI part: -> go to the branch **Machine-Learning-Models** <br>
 To see the electronics part: -> go to the branch **electronics** <br>
 To see the example bluetooth react application: -> go to the branch **bluetooth-example-react**<br>
 
-Credits:<br>
-Idea taken from: https://github.com/venisehannoyer/Hear-me-Mobile-app
+
 
 Test videos for the app: <br>
 [Coughing sound](https://youtu.be/htk-HbeimwY) <br>
@@ -28,6 +27,8 @@ Test videos for the electronics:<br>
 [Enregistrement son 2](https://youtu.be/FV7ENaNfnCY)<br>
 [Prototype enregistrement](https://youtu.be/zuQoMdkOQ7Y)
 
+Team:<br>
+Antoine COHEN, Hugo NABETH, Elodie RIPAUD, Madeleine MOUTENOT, Hajar AZZOUZI <br>
 
-
-
+Credits:<br>
+Idea taken from: https://github.com/venisehannoyer/Hear-me-Mobile-app
