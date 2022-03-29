@@ -23,7 +23,10 @@ Test videos for the electronics:<br>
 [Circuit demo](https://youtu.be/4-SqgYxR2aA) <br>
 [Circuit demo voix](https://youtu.be/ixKtBrNozL8)<br>
 [Circuit demo alarme](https://youtu.be/dYirIxXml8Y)<br>
-[Saving wav file in ESP32](https://youtu.be/FV7ENaNfnCY)
+[Test vibreurs et micros](https://youtu.be/E2_VR1IXOcs)<br>
+[Enregistrement son 1](https://youtu.be/pGV6O3sk0Mc)<br>
+[Enregistrement son 2](https://youtu.be/FV7ENaNfnCY)<br>
+[Prototype enregistrement](https://youtu.be/zuQoMdkOQ7Y)
 
 
 
