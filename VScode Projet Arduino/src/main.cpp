@@ -11,53 +11,66 @@
 #include <WAVFileWriter.h>
 #include "BluetoothSerial.h"
 #include "config.h"
+#include <algorithm>
 
 BluetoothSerial SerialBT;
 
-int val_sensibility = 50;
-int analogMICPin_1 = 35;
+int val_sensibility = 65;
+
+int analogMICPin_1 = 32;
 int vib_1 = 12;
-int analogMICPin_2 = 32;
+int analogMICPin_2 = 33;
 int vib_2 = 13;
-int analogMICPin_3 = 33;
+int analogMICPin_3 = 35;
 int vib_3 = 14;
-int led = 34;
-bool record_mode = 0;
 
-int min (float list[3]){
-  float min = 0;
-  int index = 0;
-  for (int i = 0; i < 3;  i++)
+int mic_actif = 0;
 
-  {
-    if (list[i] < min) {
-
-      min = list[i];
-      index = i;
-    }
-  }
-  return index;
-}
+//int led = 34;
+int record_mode = 0;
 
 void wait_for_sound()
 {
   record_mode = 0;
+  while(record_mode == 0)
+  {
+    Serial.println("Dans la boucle while");
 
-  /* CA MARCHE PAS LA BOUCLE WHILE */
-  while (10*log(analogRead(analogMICPin_1)) < val_sensibility ||
-          10*log(analogRead(analogMICPin_2)) < val_sensibility ||
-          10*log(analogRead(analogMICPin_3)) < val_sensibility)
-    { 
-      Serial.println(10*log(analogRead(analogMICPin_3)));
-      vTaskDelay(pdMS_TO_TICKS(100));
+    if(10*log(analogRead(analogMICPin_1)) < val_sensibility)
+    {
+      mic_actif = 1;
+      record_mode = 1;
     }
-  
-  //record_mode = 1;
+    else
+    {
+      if(10*log(analogRead(analogMICPin_2)) < val_sensibility)
+      {
+        mic_actif = 2;
+        record_mode = 1;
+      }
+      else
+      {
+        if(10*log(analogRead(analogMICPin_3)) < val_sensibility)
+        {
+          mic_actif = 3;
+          record_mode = 1;
+        }
+      }
+    }
+    vTaskDelay(pdMS_TO_TICKS(100));
+  }
+
 }
 
 void record(I2SSampler *input, const char *fname)
 {
   record_mode = 1;
+
+  Serial.println("Record");
+  Serial.print("mic actif : ");
+  Serial.println(mic_actif);
+
+
   int16_t *samples = (int16_t *)malloc(sizeof(int16_t) * 1024);
   ESP_LOGI(TAG, "Start recording");
   input->start();
@@ -68,31 +81,25 @@ void record(I2SSampler *input, const char *fname)
   // keep writing until the user releases the button
 
   int duree = 0;
+  //Serial.println(mic_actif);
+
 
   while (record_mode == 1)
   {
-    float mic_output[3] = {
-    10*log(analogRead(analogMICPin_1)),
-    10*log(analogRead(analogMICPin_2)),
-    10*log(analogRead(analogMICPin_3))
-    };
-
-    int min_index = min(mic_output);
-    if(min_index == 0){
-      digitalWrite(vib_1, HIGH);
-    }
-    else{
-      if(min_index == 1){
+    switch (mic_actif)
+    {
+      case 1:
+        digitalWrite(vib_1, HIGH);
+        break;
+      case 2:
         digitalWrite(vib_2, HIGH);
-      }
-      else{
-        if(min_index == 2){
-          digitalWrite(vib_3, HIGH);
-        }
-      }
+        break;
+      case 3:
+        digitalWrite(vib_3, HIGH);
+        break;
     }
 
-    digitalWrite(led, HIGH);
+    //digitalWrite(led, HIGH);
     int samples_read = input->read(samples, 1024);
     int64_t start = esp_timer_get_time();
     writer->write(samples, samples_read);
@@ -101,7 +108,8 @@ void record(I2SSampler *input, const char *fname)
 
     duree += end-start;
 
-    if(duree > 5e5){
+    if(duree > 3e5){
+      mic_actif = 0;
       record_mode = 0;
     }
 
@@ -161,19 +169,16 @@ void main_task(void *param)
   //Output *output = new DACOutput(I2S_NUM_0);
   while (true)
   {
+    record_mode = 0;
     // wait for the user to push and hold the button
     wait_for_sound();
     record(input, "/sdcard/audio_1.wav");
 
-    digitalWrite(led, LOW);
+    //digitalWrite(led, LOW);
     digitalWrite (vib_1, LOW);
     digitalWrite (vib_2, LOW);
     digitalWrite (vib_3, LOW);
 
-    /*play(output, "/sdcard/audio_1.wav");
-    digitalWrite(led, LOW);
-    digitalWrite (vib_1, LOW);
-    */
     vTaskDelay(pdMS_TO_TICKS(1000));
 
   }
@@ -184,10 +189,10 @@ void setup()
 {
   Serial.begin(115200);
   SerialBT.begin("(H)ear-me");
-
+ 
   delay(5000);
   
-  pinMode(GPIO_BUTTON, INPUT_PULLUP);
+  //pinMode(GPIO_BUTTON, INPUT_PULLUP);
 
   pinMode(vib_1, OUTPUT);
   pinMode(analogMICPin_1, INPUT);
@@ -198,19 +203,13 @@ void setup()
   pinMode(vib_3, OUTPUT);
   pinMode(analogMICPin_3, INPUT);
 
-  pinMode(led, OUTPUT);
-  digitalWrite(led, LOW);
+  //pinMode(led, OUTPUT);
+  //digitalWrite(led, LOW);
   
   xTaskCreate(main_task, "Main", 4096, NULL, 0, NULL);
   
-  //pinMode(2, INPUT_PULLUP);
 }
 
 void loop()
 {
-  /*
-  int val_analog_mic = analogRead(analogMICPin);
-  int log_val_mic = 10*log(val_analog_mic);
-  Serial.println(log_val_mic);
-  */
 }
