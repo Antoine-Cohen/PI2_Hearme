@@ -14,7 +14,12 @@ If you want to run the project on **ios**, be sure to include the code and permi
 [ble manager](https://github.com/innoveit/react-native-ble-manager) (if you want to use Bluetooth Low Energy) <br>
 [audio record](https://www.npmjs.com/package/react-native-audio-record)<br>
 
-Here is a proposition of steps to continue the project.<br> 
+However the Bluetooth Low Energy connection between the ESP and the phone doesn't allow sound files transfer.
+
+Here is a suggestion of steps to continue the project.<br> 
 TODO:<br>
-Connexion bluetooth classique: 
+Classic Bluetooth: to be able to transfer sound files[maybe use this module](https://kenjdavidson.com/react-native-bluetooth-classic/) (or use Wifi module)<br>  
+Speech processing and keyword extraction: to be able to summarize conversations. [Microsoft cognitive services API](https://azure.microsoft.com/fr-fr/services/cognitive-services/), [picovoice](https://www.npmjs.com/package/@picovoice/picovoice-react-native) or RNNs can be a lead (you can use other options you find as well) <br>
+
+
 
