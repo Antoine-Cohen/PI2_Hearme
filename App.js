@@ -13,6 +13,7 @@ import { getModel, getYamnet, getEmbeddings } from "./model/model";
 import { startRecording, stopRecording } from "./audioRecorder";
 // import { startBle } from "./Bluetooth";
 
+// Commentaire ajouté
 var rnfs = require("react-native-fs");
 
 // Main component
